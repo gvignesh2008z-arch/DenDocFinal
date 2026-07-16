@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DenDoc Dental — Creating Confident Smiles</title>
+<meta name="description" content="DenDoc Dental — world-class, painless, personalized dentistry powered by the latest technology.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+/* ============================= TOKENS ============================= */
+:root{
+  --navy:#0B1F35;
+  --navy-light:#152C48;
+  --white:#FFFFFF;
+  --gold:#D4AF37;
+  --gold-soft:#E8CB74;
+  --ivory:#FAF8F5;
+  --charcoal:#222222;
+  --line: rgba(11,31,53,0.10);
+  --shadow-lux: 0 30px 80px -20px rgba(11,31,53,0.25);
+  --shadow-soft: 0 10px 40px -10px rgba(11,31,53,0.12);
+  --ease: cubic-bezier(.16,.84,.44,1);
+  --dark-navy-2: #081524;
+}
+[data-theme="dark"]{
+  --ivory:#0B1420;
+  --white:#0F1E30;
+  --charcoal:#EDEBE6;
+  --line: rgba(255,255,255,0.09);
+  --navy:#0B1F35;
+  --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.5);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--ivory);
+  color:var(--charcoal);
+  overflow-x:hidden;
+  transition:background .5s var(--ease), color .5s var(--ease);
+  cursor:none;
+}
+@media (max-width:900px){ body{cursor:auto;} }
+h1,h2,h3,h4{
+  font-family:'Playfair Display',serif;
+  color:var(--navy);
+  font-weight:600;
+  letter-spacing:-0.01em;
+  line-height:1.15;
+}
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,[data-theme="dark"] h4{color:var(--gold-soft);}
+p{line-height:1.7;color:var(--charcoal);opacity:.85;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+ul{list-style:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+.container{max-width:1240px;margin:0 auto;padding:0 32px;}
+section{position:relative;padding:140px 0;}
+@media (max-width:768px){ section{padding:88px 0;} .container{padding:0 22px;} }
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold); font-weight:600; margin-bottom:18px;
+}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--gold);}
+
+.section-head{max-width:640px;margin:0 auto 64px;text-align:center;}
+.section-head h2{font-size:clamp(2rem,4vw,2.9rem);margin-bottom:16px;}
+.section-head p{font-size:1.05rem;}
+
+/* ============================= CURSOR / PROGRESS ============================= */
+#cursor-glow{
+  position:fixed;top:0;left:0;width:420px;height:420px;
+  background:radial-gradient(circle, rgba(212,175,55,0.10) 0%, rgba(212,175,55,0) 70%);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:opacity .3s ease;
+}
+#cursor-dot{
+  position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+  transition:transform .15s ease;
+}
+#cursor-ring{
+  position:fixed;top:0;left:0;width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+  transition:transform .18s var(--ease), width .25s ease, height .25s ease, opacity .25s ease;
+}
+@media (max-width:900px){ #cursor-glow,#cursor-dot,#cursor-ring{display:none;} }
+
+#scroll-progress{
+  position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+  z-index:10000;width:0%;transition:width .05s linear;
+}
+
+/* golden thread signature — desktop only */
+#thread-wrap{
+  position:fixed;left:38px;top:0;bottom:0;width:2px;z-index:40;
+  display:flex;justify-content:center;pointer-events:none;
+}
+#thread-track{position:relative;width:1px;height:100%;background:var(--line);}
+#thread-fill{position:absolute;top:0;left:0;width:100%;height:0%;background:linear-gradient(180deg,var(--gold),var(--gold-soft));box-shadow:0 0 12px rgba(212,175,55,.6);}
+#thread-dot{
+  position:absolute;left:50%;width:10px;height:10px;background:var(--gold);border-radius:50%;
+  transform:translate(-50%,-50%);box-shadow:0 0 0 6px rgba(212,175,55,.15);
+  transition:top .1s linear;
+}
+@media (max-width:1180px){ #thread-wrap{display:none;} }
+
+/* ============================= LOADER ============================= */
+#loader{
+  position:fixed;inset:0;background:var(--navy);z-index:100000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;
+  transition:opacity .8s var(--ease), visibility .8s var(--ease);
+}
+#loader.hide{opacity:0;visibility:hidden;}
+.loader-mark{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--white);letter-spacing:.05em;}
+.loader-mark span{color:var(--gold);}
+.loader-bar{width:180px;height:1px;background:rgba(255,255,255,0.15);position:relative;overflow:hidden;}
+.loader-bar::after{content:'';position:absolute;left:-40%;top:0;bottom:0;width:40%;background:var(--gold);animation:loaderslide 1.1s ease-in-out infinite;}
+@keyframes loaderslide{ 0%{left:-40%;} 100%{left:100%;} }
+
+/* ============================= NAVBAR ============================= */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:26px 0;transition:all .45s var(--ease);
+}
+header .container{display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--white);letter-spacing:.03em;}
+.logo span{color:var(--gold);}
+nav.scrolled{
+  padding:14px 0;background:rgba(11,31,53,0.75);backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:0 10px 30px -15px rgba(0,0,0,0.3);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+nav.scrolled .logo{color:var(--white);}
+.nav-links{display:flex;align-items:center;gap:38px;}
+.nav-links a{
+  font-size:.86rem;color:rgba(255,255,255,0.82);font-weight:500;letter-spacing:.01em;
+  position:relative;padding-bottom:4px;
+}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .3s var(--ease);}
+.nav-links a:hover::after{width:100%;}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{
+  background:var(--gold);color:var(--navy)!important;padding:11px 24px;border-radius:100px;
+  font-weight:600;font-size:.82rem;letter-spacing:.02em;
+}
+.nav-cta::after{display:none;}
+.nav-cta:hover{background:var(--gold-soft);}
+.theme-toggle,.mobile-toggle{
+  width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);
+  display:flex;align-items:center;justify-content:center;color:var(--white);margin-left:10px;
+  transition:.3s;
+}
+.theme-toggle:hover{background:rgba(255,255,255,0.1);}
+.mobile-toggle{display:none;}
+.theme-toggle svg,.mobile-toggle svg{width:17px;height:17px;}
+@media (max-width:900px){
+  .nav-links{position:fixed;top:0;right:-100%;height:100vh;width:78%;max-width:340px;
+    background:var(--navy);flex-direction:column;justify-content:center;gap:30px;transition:right .5s var(--ease);}
+  .nav-links.open{right:0;}
+  .mobile-toggle{display:flex;}
+}
+
+/* ============================= HERO ============================= */
+.hero{
+  min-height:100vh;position:relative;display:flex;align-items:center;
+  background:
+    linear-gradient(180deg, rgba(11,31,53,0.55) 0%, rgba(11,31,53,0.78) 60%, var(--navy) 100%),
+    url('https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?fm=jpg&q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
+  overflow:hidden;
+}
+.hero-blob{
+  position:absolute;border-radius:50%;filter:blur(70px);opacity:.35;pointer-events:none;
+}
+.blob1{width:520px;height:520px;background:var(--gold);top:-140px;right:-120px;animation:floatY 9s ease-in-out infinite;}
+.blob2{width:380px;height:380px;background:#4d6c94;bottom:-120px;left:-100px;animation:floatY 11s ease-in-out infinite reverse;}
+@keyframes floatY{0%,100%{transform:translateY(0px);}50%{transform:translateY(-40px);}}
+
+.hero-content{position:relative;z-index:5;max-width:760px;padding-top:60px;}
+.hero-eyebrow{color:var(--gold-soft);font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--gold-soft);}
+.hero h1{
+  color:var(--white);font-size:clamp(2.6rem,6vw,4.6rem);font-weight:600;margin-bottom:26px;
+}
+.hero h1 em{font-style:italic;color:var(--gold-soft);}
+.hero p.sub{color:rgba(255,255,255,0.78);font-size:1.15rem;max-width:520px;margin-bottom:44px;}
+.hero-ctas{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:70px;}
+.btn{
+  padding:16px 32px;border-radius:100px;font-weight:600;font-size:.9rem;letter-spacing:.01em;
+  transition:all .35s var(--ease);display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden;
+}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold-soft);transform:translateY(-3px);box-shadow:0 16px 30px -10px rgba(212,175,55,0.5);}
+.btn-outline{border:1px solid rgba(255,255,255,0.35);color:var(--white);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-soft);transform:translateY(-3px);}
+.btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.5);transform:scale(0);animation:ripple .6s linear;pointer-events:none;}
+@keyframes ripple{to{transform:scale(3);opacity:0;}}
+
+.hero-stats{display:flex;gap:60px;flex-wrap:wrap;}
+.stat-num{font-family:'Playfair Display',serif;color:var(--gold-soft);font-size:2.3rem;font-weight:600;}
+.stat-label{color:rgba(255,255,255,0.65);font-size:.82rem;letter-spacing:.04em;margin-top:4px;}
+.scroll-cue{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:5;
+  color:rgba(255,255,255,0.55);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+}
+.scroll-cue .line{width:1px;height:34px;background:linear-gradient(180deg,rgba(255,255,255,0.6),transparent);animation:cueMove 1.8s ease-in-out infinite;}
+@keyframes cueMove{0%{opacity:1;transform:scaleY(0.4);transform-origin:top;}100%{opacity:0;transform:scaleY(1);transform-origin:top;}}
+
+/* reveal utility */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .9s var(--ease), transform .9s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+
+/* ============================= ABOUT ============================= */
+.about-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:70px;align-items:center;}
+.about-media{position:relative;}
+.about-media img{border-radius:20px;box-shadow:var(--shadow-lux);}
+.about-badge{
+  position:absolute;bottom:-30px;left:-30px;background:var(--white);border-radius:16px;
+  padding:22px 26px;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:14px;
+  border:1px solid var(--line);
+}
+.about-badge .icon-wrap{width:44px;height:44px;border-radius:50%;background:rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold);}
+.about-badge b{display:block;font-family:'Playfair Display',serif;color:var(--navy);font-size:1.1rem;}
+[data-theme="dark"] .about-badge b{color:var(--gold-soft);}
+.about-badge span{font-size:.78rem;opacity:.7;}
+.about-text .eyebrow{margin-bottom:14px;}
+.about-text h2{font-size:clamp(1.9rem,3.4vw,2.6rem);margin-bottom:22px;}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px;}
+.about-card{padding:22px;border:1px solid var(--line);border-radius:14px;transition:.35s var(--ease);}
+.about-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:var(--shadow-soft);}
+.about-card .icon-wrap{width:38px;height:38px;border-radius:10px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.about-card h4{font-size:1.02rem;margin-bottom:6px;}
+.about-card p{font-size:.87rem;}
+
+/* ============================= SERVICES ============================= */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:26px;}
+.service-card{
+  position:relative;padding:38px 30px;border-radius:18px;background:var(--white);
+  border:1px solid var(--line);overflow:hidden;transition:all .45s var(--ease);
+}
+.service-card::before{
+  content:'';position:absolute;inset:0;background:linear-gradient(160deg,var(--navy),var(--navy-light));
+  opacity:0;transition:opacity .45s var(--ease);z-index:0;
+}
+.service-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lux);border-color:transparent;}
+.service-card:hover::before{opacity:1;}
+.service-card > *{position:relative;z-index:1;}
+.service-icon{
+  width:56px;height:56px;border-radius:14px;background:rgba(212,175,55,0.12);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;margin-bottom:22px;transition:.4s;
+}
+.service-card:hover .service-icon{background:rgba(212,175,55,0.18);transform:rotate(-8deg) scale(1.05);}
+.service-card h3{font-size:1.18rem;margin-bottom:10px;transition:.4s;}
+.service-card:hover h3{color:var(--white);}
+.service-card p{font-size:.9rem;margin-bottom:20px;transition:.4s;}
+.service-card:hover p{color:rgba(255,255,255,0.75);opacity:1;}
+.service-link{font-size:.82rem;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:.4s;}
+.service-card:hover .service-link{color:var(--gold-soft);}
+.service-link svg{width:14px;height:14px;transition:transform .3s;}
+.service-card:hover .service-link svg{transform:translateX(4px);}
+
+/* ============================= WHY CHOOSE — TIMELINE ============================= */
+.why-wrap{position:relative;max-width:900px;margin:0 auto;}
+.why-line{position:absolute;left:29px;top:10px;bottom:10px;width:1px;background:var(--line);}
+.why-item{position:relative;padding-left:80px;margin-bottom:50px;}
+.why-item:last-child{margin-bottom:0;}
+.why-dot{
+  position:absolute;left:0;top:0;width:60px;height:60px;border-radius:50%;background:var(--white);
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold);
+  box-shadow:var(--shadow-soft);transition:.4s;
+}
+.why-item:hover .why-dot{background:var(--navy);color:var(--gold-soft);border-color:var(--navy);transform:scale(1.06);}
+.why-item h4{font-size:1.15rem;margin-bottom:6px;}
+.why-item p{font-size:.92rem;max-width:560px;}
+
+/* ============================= DOCTORS ============================= */
+.doctors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px;}
+.doctor-card{
+  background:var(--white);border-radius:20px;overflow:hidden;border:1px solid var(--line);
+  transition:.45s var(--ease);
+}
+.doctor-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lux);}
+.doctor-photo{position:relative;aspect-ratio:4/5;overflow:hidden;}
+.doctor-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.doctor-card:hover .doctor-photo img{transform:scale(1.06);}
+.doctor-social{
+  position:absolute;bottom:16px;left:16px;display:flex;gap:8px;opacity:0;transform:translateY(10px);
+  transition:.4s var(--ease);
+}
+.doctor-card:hover .doctor-social{opacity:1;transform:translateY(0);}
+.doctor-social a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.9);color:var(--navy);display:flex;align-items:center;justify-content:center;}
+.doctor-social a:hover{background:var(--gold);}
+.doctor-social svg{width:15px;height:15px;}
+.doctor-info{padding:24px 22px;}
+.doctor-info h4{font-size:1.15rem;margin-bottom:2px;}
+.doctor-info .role{color:var(--gold);font-size:.8rem;font-weight:600;letter-spacing:.03em;margin-bottom:10px;display:block;}
+.doctor-info p{font-size:.85rem;margin-bottom:16px;}
+.doctor-book{font-size:.8rem;font-weight:600;border:1px solid var(--line);padding:9px 18px;border-radius:100px;display:inline-block;transition:.3s;}
+.doctor-book:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+
+/* ============================= GALLERY / BEFORE-AFTER ============================= */
+.ba-wrap{max-width:820px;margin:0 auto;}
+.ba-slider{
+  position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--shadow-lux);
+  aspect-ratio:4/3;user-select:none;
+}
+.ba-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%;}
+.ba-after{z-index:1;}
+.ba-before-wrap{position:absolute;inset:0;z-index:2;overflow:hidden;width:50%;}
+.ba-before-wrap img{width:200%;max-width:none;position:absolute;inset:0;height:100%;object-fit:cover;}
+.ba-handle{
+  position:absolute;top:0;bottom:0;left:50%;width:3px;background:var(--gold);z-index:3;
+  transform:translateX(-50%);cursor:ew-resize;
+}
+.ba-handle::after{
+  content:'⟷';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:46px;height:46px;background:var(--gold);border-radius:50%;color:var(--navy);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+.ba-label{position:absolute;top:18px;z-index:4;background:rgba(11,31,53,0.7);color:var(--white);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:100px;}
+.ba-label.left{left:18px;}
+.ba-label.right{right:18px;}
+.ba-tabs{display:flex;justify-content:center;gap:12px;margin-top:26px;flex-wrap:wrap;}
+.ba-tab{padding:9px 20px;border-radius:100px;border:1px solid var(--line);font-size:.82rem;font-weight:500;transition:.3s;}
+.ba-tab.active,.ba-tab:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+
+/* ============================= TESTIMONIALS ============================= */
+.test-wrap{max-width:760px;margin:0 auto;position:relative;}
+.test-track{overflow:hidden;}
+.test-slides{display:flex;transition:transform .6s var(--ease);}
+.test-slide{min-width:100%;padding:0 6px;}
+.test-card{
+  background:rgba(255,255,255,0.6);backdrop-filter:blur(14px);border:1px solid var(--line);
+  border-radius:22px;padding:46px;text-align:center;box-shadow:var(--shadow-soft);
+}
+[data-theme="dark"] .test-card{background:rgba(255,255,255,0.03);}
+.test-stars{color:var(--gold);display:flex;justify-content:center;gap:4px;margin-bottom:20px;}
+.test-stars svg{width:17px;height:17px;fill:var(--gold);}
+.test-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:1.2rem;color:var(--navy);margin-bottom:26px;line-height:1.5;}
+[data-theme="dark"] .test-quote{color:var(--gold-soft);}
+.test-person{display:flex;align-items:center;justify-content:center;gap:14px;}
+.test-person img{width:48px;height:48px;border-radius:50%;object-fit:cover;}
+.test-person b{display:block;font-size:.92rem;}
+.test-person span{font-size:.78rem;opacity:.65;}
+.test-dots{display:flex;justify-content:center;gap:10px;margin-top:30px;}
+.test-dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:.3s;}
+.test-dot.active{background:var(--gold);width:24px;border-radius:5px;}
+.test-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;
+  background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-soft);transition:.3s;z-index:5;
+}
+.test-arrow:hover{background:var(--navy);color:var(--white);}
+.test-arrow.prev{left:-24px;}
+.test-arrow.next{right:-24px;}
+@media (max-width:860px){.test-arrow{display:none;}}
+
+/* ============================= TECHNOLOGY ============================= */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;}
+.tech-card{
+  padding:36px 26px;border-radius:18px;background:linear-gradient(160deg,var(--navy),var(--navy-light));
+  color:var(--white);position:relative;overflow:hidden;transition:.4s var(--ease);
+}
+.tech-card:hover{transform:translateY(-6px) rotateX(2deg);box-shadow:var(--shadow-lux);}
+.tech-card::after{
+  content:'';position:absolute;top:-40%;right:-40%;width:70%;height:70%;
+  background:radial-gradient(circle,rgba(212,175,55,0.25),transparent 70%);
+}
+.tech-icon{width:52px;height:52px;border-radius:14px;background:rgba(212,175,55,0.15);color:var(--gold-soft);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative;z-index:1;}
+.tech-card h4{color:var(--white);font-size:1.05rem;margin-bottom:8px;position:relative;z-index:1;}
+.tech-card p{color:rgba(255,255,255,0.65);font-size:.85rem;position:relative;z-index:1;}
+
+/* ============================= APPOINTMENT ============================= */
+.appt-section{background:var(--navy);position:relative;overflow:hidden;}
+.appt-section::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(212,175,55,0.15),transparent 70%);top:-200px;right:-200px;}
+.appt-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:70px;align-items:center;position:relative;z-index:2;}
+.appt-text .eyebrow{color:var(--gold-soft);}
+.appt-text .eyebrow::before{background:var(--gold-soft);}
+.appt-text h2{color:var(--white);font-size:clamp(1.9rem,3.4vw,2.6rem);margin-bottom:18px;}
+.appt-text p{color:rgba(255,255,255,0.7);margin-bottom:30px;}
+.appt-points{display:flex;flex-direction:column;gap:16px;}
+.appt-points li{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,0.85);font-size:.92rem;}
+.appt-points svg{color:var(--gold);width:18px;height:18px;flex-shrink:0;}
+
+.appt-form{
+  background:rgba(255,255,255,0.06);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.12);
+  border-radius:22px;padding:42px;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.field{margin-bottom:18px;}
+.field label{display:block;font-size:.78rem;color:rgba(255,255,255,0.6);margin-bottom:8px;letter-spacing:.03em;}
+.field input,.field select,.field textarea{
+  width:100%;padding:13px 16px;border-radius:10px;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.14);color:var(--white);font-family:inherit;font-size:.9rem;
+  transition:.3s;
+}
+.field select option{color:#111;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,0.09);}
+.field textarea{resize:vertical;min-height:90px;}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.35);}
+.form-submit{width:100%;background:var(--gold);color:var(--navy);padding:16px;border-radius:12px;font-weight:700;font-size:.95rem;letter-spacing:.02em;transition:.35s;position:relative;overflow:hidden;}
+.form-submit:hover{background:var(--gold-soft);transform:translateY(-2px);box-shadow:0 16px 30px -10px rgba(212,175,55,0.4);}
+.form-success{
+  display:none;text-align:center;padding:30px 10px;color:var(--white);
+}
+.form-success.show{display:block;}
+.form-success .check{
+  width:64px;height:64px;border-radius:50%;background:rgba(212,175,55,0.18);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+  animation:pop .5s var(--ease);
+}
+@keyframes pop{0%{transform:scale(0.4);opacity:0;}100%{transform:scale(1);opacity:1;}}
+.form-success h4{color:var(--white);margin-bottom:8px;}
+.form-success p{color:rgba(255,255,255,0.65);}
+
+/* ============================= FAQ ============================= */
+.faq-wrap{max-width:780px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;padding:26px 4px;
+  text-align:left;font-family:'Playfair Display',serif;font-size:1.08rem;color:var(--navy);
+}
+[data-theme="dark"] .faq-q{color:var(--gold-soft);}
+.faq-q .plus{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--line);flex-shrink:0;position:relative;
+  transition:.35s var(--ease);
+}
+.faq-q .plus::before,.faq-q .plus::after{content:'';position:absolute;background:var(--navy);top:50%;left:50%;transform:translate(-50%,-50%);}
+[data-theme="dark"] .faq-q .plus::before,[data-theme="dark"] .faq-q .plus::after{background:var(--gold-soft);}
+.faq-q .plus::before{width:12px;height:1px;}
+.faq-q .plus::after{width:1px;height:12px;transition:.35s var(--ease);}
+.faq-item.open .plus{background:var(--gold);border-color:var(--gold);transform:rotate(180deg);}
+.faq-item.open .plus::before,.faq-item.open .plus::after{background:var(--navy);}
+.faq-item.open .plus::after{opacity:0;}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease);}
+.faq-a p{padding:0 4px 26px;font-size:.92rem;max-width:640px;}
+
+/* ============================= CONTACT ============================= */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;}
+.contact-map{border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);min-height:380px;border:1px solid var(--line);}
+.contact-map iframe{width:100%;height:100%;min-height:380px;border:0;filter:grayscale(0.15);}
+.contact-list{display:flex;flex-direction:column;gap:22px;}
+.contact-row{display:flex;gap:18px;align-items:flex-start;padding:20px;border:1px solid var(--line);border-radius:14px;transition:.3s;}
+.contact-row:hover{border-color:var(--gold);}
+.contact-row .icon-wrap{width:42px;height:42px;border-radius:10px;background:var(--navy);color:var(--gold-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-row h4{font-size:.98rem;margin-bottom:4px;}
+.contact-row p{font-size:.87rem;}
+
+/* ============================= FOOTER ============================= */
+footer{background:var(--dark-navy-2);color:rgba(255,255,255,0.65);padding:80px 0 0;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:50px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-brand .logo{margin-bottom:16px;}
+.footer-brand p{color:rgba(255,255,255,0.55);font-size:.88rem;max-width:280px;}
+.footer-social{display:flex;gap:10px;margin-top:22px;}
+.footer-social a{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:.3s;}
+.footer-social a:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+.footer-social svg{width:15px;height:15px;}
+.footer-col h5{color:var(--white);font-family:'Playfair Display',serif;font-size:1.02rem;margin-bottom:20px;font-weight:500;}
+.footer-col ul{display:flex;flex-direction:column;gap:12px;}
+.footer-col a{font-size:.87rem;color:rgba(255,255,255,0.55);transition:.3s;}
+.footer-col a:hover{color:var(--gold-soft);}
+.footer-hours li{display:flex;justify-content:space-between;font-size:.85rem;color:rgba(255,255,255,0.55);margin-bottom:10px;}
+.newsletter{display:flex;margin-top:16px;border:1px solid rgba(255,255,255,0.15);border-radius:100px;overflow:hidden;}
+.newsletter input{flex:1;background:transparent;border:0;padding:12px 16px;color:var(--white);font-size:.85rem;}
+.newsletter input:focus{outline:none;}
+.newsletter button{background:var(--gold);color:var(--navy);padding:0 20px;font-weight:700;font-size:.85rem;}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding:26px 0;font-size:.8rem;color:rgba(255,255,255,0.4);flex-wrap:wrap;gap:10px;}
+@media (max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.footer-grid{grid-template-columns:1fr;}}
+
+/* ============================= FLOATING BUTTONS ============================= */
+.float-btns{position:fixed;bottom:30px;right:30px;z-index:800;display:flex;flex-direction:column;gap:14px;align-items:flex-end;}
+.fbtn{
+  width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 30px -8px rgba(0,0,0,0.3);transition:.35s var(--ease);
+}
+.fbtn:hover{transform:translateY(-4px) scale(1.05);}
+.fbtn.whatsapp{background:#25D366;color:#fff;}
+.fbtn.totop{background:var(--white);color:var(--navy);border:1px solid var(--line);opacity:0;pointer-events:none;transform:translateY(10px);}
+.fbtn.totop.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+.fbtn svg{width:22px;height:22px;}
+
+/* generic svg sizing inside icon wraps */
+.icon-wrap svg, .why-dot svg, .service-icon svg, .tech-icon svg{width:22px;height:22px;}
+
+@media (max-width:900px){
+  .about-grid,.appt-grid,.contact-grid{grid-template-columns:1fr;}
+  .about-badge{position:static;margin-top:-40px;margin-left:20px;width:fit-content;}
+  .form-row{grid-template-columns:1fr;}
+  .hero-stats{gap:34px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader"><div class="loader-mark">DEN<span>DOC</span></div><div class="loader-bar"></div></div>
+
+<!-- CURSOR -->
+<div id="cursor-glow"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- GOLD THREAD SIGNATURE -->
+<div id="thread-wrap">
+  <div id="thread-track">
+    <div id="thread-fill"></div>
+    <div id="thread-dot" style="top:0%"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header>
+  <div class="container">
+    <a href="#home" class="logo">DEN<span>DOC</span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#doctors">Specialists</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#technology">Technology</a>
+      <a href="#contact">Contact</a>
+      <a href="#appointment" class="nav-cta">Book Appointment</a>
+    </nav>
+    <div style="display:flex;align-items:center;">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu"></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. Excellence in Modern Dentistry</div>
+      <h1>Creating <em>Confident Smiles</em> with World-Class Dental Care.</h1>
+      <p class="sub">Experience painless, advanced, and personalized dentistry — where Swiss-level precision meets five-star comfort.</p>
+      <div class="hero-ctas">
+        <a href="#appointment" class="btn btn-gold" data-ripple>Book Appointment</a>
+        <a href="#doctors" class="btn btn-outline" data-ripple>Meet Our Doctors</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num" data-count="20" data-suffix="+">0</div><div class="stat-label">Years Experience</div></div>
+        <div><div class="stat-num" data-count="15000" data-suffix="+">0</div><div class="stat-label">Happy Patients</div></div>
+        <div><div class="stat-num" data-count="4.9" data-decimal="1" data-suffix="★">0</div><div class="stat-label">Average Rating</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="line"></div></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-media reveal">
+        <img src="https://images.unsplash.com/photo-1643660527098-559f89e45a92?fm=jpg&q=80&w=900&auto=format&fit=crop" alt="DenDoc Dental treatment room" style="aspect-ratio:8/9;object-fit:cover;">
+        <div class="about-badge">
+          <div class="icon-wrap" data-icon="shield-check"></div>
+          <div><b>ISO Certified</b><span>Sterilization Standards</span></div>
+        </div>
+      </div>
+      <div class="about-text reveal reveal-delay-1">
+        <div class="eyebrow">About DenDoc</div>
+        <h2>Where Advanced Technology Meets Human Warmth</h2>
+        <p>DenDoc Dental was founded on a single conviction: exceptional dentistry should feel as good as it looks. Every treatment room is engineered for calm — matched by a clinical team trained across some of the world's leading dental institutes.</p>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="target"></div>
+            <h4>Our Mission</h4>
+            <p>Deliver painless, precise care that restores confidence, not just teeth.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="eye"></div>
+            <h4>Our Vision</h4>
+            <p>To set the global benchmark for luxury dental experiences.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="cpu"></div>
+            <h4>Modern Equipment</h4>
+            <p>CBCT, AI diagnostics, and intraoral scanning under one roof.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="heart-handshake"></div>
+            <h4>Patient-First</h4>
+            <p>Transparent plans, flexible scheduling, zero surprises.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">What We Offer</div>
+      <h2>Comprehensive Dental Excellence</h2>
+      <p>Ten disciplines, one seamless standard of care — from routine checkups to full smile transformations.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Why DenDoc</div>
+      <h2>Eight Reasons Patients Trust Us</h2>
+      <p>A journey engineered around comfort, precision, and complete peace of mind.</p>
+    </div>
+    <div class="why-wrap">
+      <div class="why-line"></div>
+      <div id="whyItems"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section id="doctors" style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Meet The Team</div>
+      <h2>Our Specialists</h2>
+      <p>Board-certified experts, each dedicated to a single discipline of exceptional care.</p>
+    </div>
+    <div class="doctors-grid" id="doctorsGrid"></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Smile Gallery</div>
+      <h2>Real Transformations</h2>
+      <p>Drag the slider to see the DenDoc difference.</p>
+    </div>
+    <div class="ba-wrap reveal">
+      <div class="ba-slider" id="baSlider">
+        <img class="ba-after" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?fm=jpg&q=80&w=1000&auto=format&fit=crop" alt="After treatment">
+        <div class="ba-before-wrap" id="baBeforeWrap">
+          <img src="https://images.unsplash.com/photo-1570840934347-4dc56c98b8ef?fm=jpg&q=80&w=1000&auto=format&fit=crop" alt="Before treatment">
+        </div>
+        <div class="ba-label left">Before</div>
+        <div class="ba-label right">After</div>
+        <div class="ba-handle" id="baHandle"></div>
+      </div>
+      <div class="ba-tabs">
+        <button class="ba-tab active" data-set="1">Veneers Case</button>
+        <button class="ba-tab" data-set="2">Whitening Case</button>
+        <button class="ba-tab" data-set="3">Implants Case</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Testimonials</div>
+      <h2>Loved by Our Patients</h2>
+    </div>
+    <div class="test-wrap reveal">
+      <button class="test-arrow prev" id="testPrev" aria-label="Previous">‹</button>
+      <div class="test-track"><div class="test-slides" id="testSlides"></div></div>
+      <button class="test-arrow next" id="testNext" aria-label="Next">›</button>
+      <div class="test-dots" id="testDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section id="technology">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Innovation</div>
+      <h2>Technology That Sets Us Apart</h2>
+      <p>Diagnostic and treatment tools rarely found outside leading academic hospitals.</p>
+    </div>
+    <div class="tech-grid" id="techGrid"></div>
+  </div>
+</section>
+
+<!-- APPOINTMENT -->
+<section class="appt-section" id="appointment">
+  <div class="container">
+    <div class="appt-grid">
+      <div class="appt-text reveal">
+        <div class="eyebrow">Book A Visit</div>
+        <h2>Reserve Your Consultation</h2>
+        <p>Tell us a little about what you're looking for — our care team will confirm within one business day.</p>
+        <ul class="appt-points">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Free initial consultation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Flexible morning &amp; evening slots</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Transparent, itemized pricing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Emergency slots held daily</li>
+        </ul>
+      </div>
+      <div class="appt-form reveal reveal-delay-1">
+        <form id="apptForm">
+          <div class="form-row">
+            <div class="field"><label>Full Name</label><input type="text" required placeholder="Your name"></div>
+            <div class="field"><label>Phone</label><input type="tel" required placeholder="+91 00000 00000"></div>
+          </div>
+          <div class="field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+          <div class="form-row">
+            <div class="field">
+              <label>Treatment</label>
+              <select required>
+                <option value="">Select treatment</option>
+                <option>General Dentistry</option>
+                <option>Dental Implants</option>
+                <option>Cosmetic Dentistry</option>
+                <option>Orthodontics</option>
+                <option>Teeth Whitening</option>
+                <option>Emergency Care</option>
+              </select>
+            </div>
+            <div class="field"><label>Preferred Date</label><input type="date"></div>
+          </div>
+          <div class="field"><label>Message (optional)</label><textarea placeholder="Anything we should know before your visit?"></textarea></div>
+          <button type="submit" class="form-submit" data-ripple>Confirm Appointment Request</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="30" height="30"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h4>Request Received</h4>
+          <p>Our care team will reach out within one business day to confirm your slot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">FAQ</div>
+      <h2>Common Questions</h2>
+    </div>
+    <div class="faq-wrap" id="faqWrap"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Visit Us</div>
+      <h2>Get In Touch</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-map reveal">
+        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=80.235%2C13.045%2C80.275%2C13.075&layer=mapnik" loading="lazy"></iframe>
+      </div>
+      <div class="contact-list reveal reveal-delay-1">
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="map-pin"></div>
+          <div><h4>Clinic Address</h4><p>4th Floor, The Meridian Tower, Anna Salai, Chennai 600002</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="clock"></div>
+          <div><h4>Working Hours</h4><p>Mon – Sat: 9:00 AM – 8:00 PM · Sun: 10:00 AM – 4:00 PM</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="phone"></div>
+          <div><h4>Phone &amp; WhatsApp</h4><p>+91 98765 43210</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="mail"></div>
+          <div><h4>Email</h4><p>hello@dendocdental.com</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="siren"></div>
+          <div><h4>Emergency Line</h4><p>+91 98765 00000 (24/7)</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo">DEN<span>DOC</span></a>
+        <p>Luxury dentistry, engineered around you. Modern technology, unhurried care, world-class results.</p>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#doctors">Specialists</a></li>
+          <li><a href="#gallery">Smile Gallery</a></li>
+          <li><a href="#appointment">Book Appointment</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Hours</h5>
+        <ul class="footer-hours">
+          <li><span>Mon – Fri</span><span>9am – 8pm</span></li>
+          <li><span>Saturday</span><span>9am – 6pm</span></li>
+          <li><span>Sunday</span><span>10am – 4pm</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Newsletter</h5>
+        <p style="font-size:.85rem;color:rgba(255,255,255,0.55);">Smile care tips, once a month.</p>
+        <div class="newsletter"><input type="email" placeholder="Your email"><button id="newsletterBtn">Join</button></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> DenDoc Dental. All rights reserved.</span>
+      <span>Designed with care in Chennai</span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="float-btns">
+  <a href="https://wa.me/919876543210" target="_blank" class="fbtn whatsapp" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.29 4.86L2 22l5.36-1.4a9.9 9.9 0 0 0 4.68 1.19h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.4c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.25-8.25 8.25zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.4-.12-.56.13-.17.25-.65.81-.79.97-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.22-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.86-.87 2.09s.9 2.42 1.02 2.58c.12.17 1.77 2.7 4.28 3.79.6.26 1.06.42 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
+  </a>
+  <button class="fbtn totop" id="toTop" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+</div>
+
+<script>
+/* ============================= DATA ============================= */
+const SERVICES = [
+  {icon:'stethoscope', title:'General Dentistry', desc:'Comprehensive checkups, cleanings, and preventive care for the whole family.'},
+  {icon:'anchor', title:'Dental Implants', desc:'Titanium-precision implants restoring full function and a natural look.'},
+  {icon:'activity', title:'Root Canal', desc:'Painless, single-visit root canal therapy using rotary endodontics.'},
+  {icon:'align-center', title:'Orthodontics', desc:'Traditional braces and modern alignment systems for every age.'},
+  {icon:'sparkles', title:'Cosmetic Dentistry', desc:'Bespoke smile design blending art, symmetry, and dental science.'},
+  {icon:'sun', title:'Teeth Whitening', desc:'Clinically proven whitening for a brighter smile in one session.'},
+  {icon:'gem', title:'Dental Veneers', desc:'Ultra-thin porcelain veneers custom-shaded to your natural teeth.'},
+  {icon:'baby', title:'Pediatric Dentistry', desc:'Gentle, playful care designed specifically for younger smiles.'},
+  {icon:'siren', title:'Emergency Dental Care', desc:'Same-day emergency appointments, every day of the week.'},
+  {icon:'move', title:'Invisible Aligners', desc:'Discreet, removable aligners for a confident straightening journey.'},
+];
+
+const WHY = [
+  {icon:'cpu', title:'Latest Technology', desc:'CBCT imaging, AI diagnostics, and digital scanning as standard.'},
+  {icon:'award', title:'Experienced Doctors', desc:'Specialists trained at internationally recognized dental institutes.'},
+  {icon:'feather', title:'Pain-Free Treatment', desc:'Advanced anesthesia protocols for a genuinely comfortable visit.'},
+  {icon:'scan', title:'Digital X-Rays', desc:'90% less radiation than traditional film, instant results.'},
+  {icon:'shield', title:'Sterilized Equipment', desc:'Hospital-grade sterilization for every instrument, every patient.'},
+  {icon:'gem', title:'Affordable Luxury', desc:'Premium care with transparent, itemized, no-surprise pricing.'},
+  {icon:'calendar-clock', title:'Flexible Appointments', desc:'Early morning, evening, and weekend slots available.'},
+  {icon:'life-buoy', title:'Emergency Support', desc:'A dedicated line for urgent dental concerns, 24/7.'},
+];
+
+const DOCTORS = [
+  {name:'Dr. Elena Marchetti', role:'Cosmetic & Aesthetic Dentistry', exp:'14 yrs experience', img:'https://randomuser.me/api/portraits/women/65.jpg'},
+  {name:'Dr. Aiden Cole', role:'Implants & Oral Surgery', exp:'18 yrs experience', img:'https://randomuser.me/api/portraits/men/32.jpg'},
+  {name:'Dr. Sofia Reyes', role:'Orthodontics', exp:'11 yrs experience', img:'https://randomuser.me/api/portraits/women/44.jpg'},
+  {name:'Dr. Marcus Webb', role:'Pediatric Dentistry', exp:'9 yrs experience', img:'https://randomuser.me/api/portraits/men/76.jpg'},
+];
+
+const TECH = [
+  {icon:'scan-line', title:'CBCT Scan', desc:'3D imaging for precise implant and root canal planning.'},
+  {icon:'smile', title:'Digital Smile Design', desc:'Preview your new smile before treatment begins.'},
+  {icon:'zap', title:'Laser Dentistry', desc:'Faster healing, minimal discomfort, virtually silent.'},
+  {icon:'camera', title:'Intraoral Scanner', desc:'No messy impressions — just a quick digital scan.'},
+  {icon:'brain-circuit', title:'AI Diagnosis', desc:'Machine-assisted detection for early-stage issues.'},
+];
+
+const TESTIMONIALS = [
+  {name:'Priya Nair', role:'Verified Patient', quote:'The most comfortable dental experience I have ever had — the whole team explained every step before doing it.', img:'https://randomuser.me/api/portraits/women/68.jpg'},
+  {name:'Rahul Menon', role:'Verified Patient', quote:'My implants healed faster than expected. Genuinely felt like a five-star clinic, not a hospital.', img:'https://randomuser.me/api/portraits/men/54.jpg'},
+  {name:'Ananya Iyer', role:'Verified Patient', quote:'The Digital Smile Design preview sold me instantly — the veneers matched exactly what I saw beforehand.', img:'https://randomuser.me/api/portraits/women/21.jpg'},
+  {name:'Karthik Suresh', role:'Verified Patient', quote:'Booked an emergency slot on a Sunday and was seen within the hour. Outstanding care.', img:'https://randomuser.me/api/portraits/men/12.jpg'},
+];
+
+const FAQS = [
+  {q:'Do you offer painless treatment options?', a:'Yes — we use advanced topical and injectable anesthesia protocols, along with laser dentistry where appropriate, to keep every procedure as comfortable as possible.'},
+  {q:'How soon can I get an emergency appointment?', a:'Emergency slots are held open every single day. Call our 24/7 emergency line and our team will fit you in within hours, not days.'},
+  {q:'Do you accept insurance or offer payment plans?', a:'We work with most major insurance providers and also offer flexible, transparent payment plans for larger treatments like implants or full smile makeovers.'},
+  {q:'What technology do you use for diagnosis?', a:'CBCT 3D imaging, digital intraoral scanning, and AI-assisted diagnostics let us catch issues earlier and plan treatment with far greater precision than traditional X-rays alone.'},
+  {q:'Is DenDoc suitable for children?', a:'Absolutely. Our pediatric specialist designs every visit to be gentle and reassuring, with a dedicated, playful environment for younger patients.'},
+];
+
+/* ============================= LUCIDE ICON RENDER ============================= */
+function iconSVG(name){
+  const el = document.createElement('i');
+  el.setAttribute('data-lucide', name);
+  return el.outerHTML;
+}
+
+/* ============================= BUILD: SERVICES ============================= */
+const servicesGrid = document.getElementById('servicesGrid');
+SERVICES.forEach((s,i)=>{
+  const el = document.createElement('div');
+  el.className = 'service-card reveal reveal-delay-' + ((i%3)+1);
+  el.innerHTML = `
+    <div class="service-icon">${iconSVG(s.icon)}</div>
+    <h3>${s.title}</h3>
+    <p>${s.desc}</p>
+    <a href="#appointment" class="service-link">Learn More
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>`;
+  servicesGrid.appendChild(el);
+});
+
+/* ============================= BUILD: WHY ============================= */
+const whyItems = document.getElementById('whyItems');
+WHY.forEach((w,i)=>{
+  const el = document.createElement('div');
+  el.className = 'why-item reveal';
+  el.innerHTML = `
+    <div class="why-dot">${iconSVG(w.icon)}</div>
+    <h4>${w.title}</h4>
+    <p>${w.desc}</p>`;
+  whyItems.appendChild(el);
+});
+
+/* ============================= BUILD: DOCTORS ============================= */
+const doctorsGrid = document.getElementById('doctorsGrid');
+DOCTORS.forEach((d,i)=>{
+  const el = document.createElement('div');
+  el.className = 'doctor-card reveal reveal-delay-' + ((i%3)+1);
+  el.innerHTML = `
+    <div class="doctor-photo">
+      <img src="${d.img}" alt="${d.name}">
+      <div class="doctor-social">
+        <a href="#" aria-label="LinkedIn">${iconSVG('linkedin')}</a>
+        <a href="#" aria-label="Instagram">${iconSVG('instagram')}</a>
+      </div>
+    </div>
+    <div class="doctor-info">
+      <h4>${d.name}</h4>
+      <span class="role">${d.role}</span>
+      <p>${d.exp}</p>
+      <a href="#appointment" class="doctor-book">Book Consultation</a>
+    </div>`;
+  doctorsGrid.appendChild(el);
+});
+
+/* ============================= BUILD: TECH ============================= */
+const techGrid = document.getElementById('techGrid');
+TECH.forEach((t,i)=>{
+  const el = document.createElement('div');
+  el.className = 'tech-card reveal reveal-delay-' + ((i%3)+1);
+  el.innerHTML = `<div class="tech-icon">${iconSVG(t.icon)}</div><h4>${t.title}</h4><p>${t.desc}</p>`;
+  techGrid.appendChild(el);
+});
+
+/* ============================= BUILD: TESTIMONIALS ============================= */
+const testSlides = document.getElementById('testSlides');
+const testDots = document.getElementById('testDots');
+TESTIMONIALS.forEach((t,i)=>{
+  const slide = document.createElement('div');
+  slide.className = 'test-slide';
+  slide.innerHTML = `
+    <div class="test-card">
+      <div class="test-stars">${'<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>'.repeat(5)}</div>
+      <p class="test-quote">"${t.quote}"</p>
+      <div class="test-person">
+        <img src="${t.img}" alt="${t.name}">
+        <div><b>${t.name}</b><span>${t.role}</span></div>
+      </div>
+    </div>`;
+  testSlides.appendChild(slide);
+  const dot = document.createElement('div');
+  dot.className = 'test-dot' + (i===0?' active':'');
+  dot.dataset.i = i;
+  testDots.appendChild(dot);
+});
+let testIndex = 0;
+function goTestimonial(i){
+  testIndex = (i + TESTIMONIALS.length) % TESTIMONIALS.length;
+  testSlides.style.transform = `translateX(-${testIndex*100}%)`;
+  [...testDots.children].forEach((d,idx)=>d.classList.toggle('active', idx===testIndex));
+}
+document.getElementById('testPrev').addEventListener('click', ()=>goTestimonial(testIndex-1));
+document.getElementById('testNext').addEventListener('click', ()=>goTestimonial(testIndex+1));
+[...testDots.children].forEach(d=>d.addEventListener('click', ()=>goTestimonial(+d.dataset.i)));
+setInterval(()=>goTestimonial(testIndex+1), 6000);
+
+/* ============================= BUILD: FAQ ============================= */
+const faqWrap = document.getElementById('faqWrap');
+FAQS.forEach((f,i)=>{
+  const item = document.createElement('div');
+  item.className = 'faq-item';
+  item.innerHTML = `
+    <button class="faq-q"><span>${f.q}</span><span class="plus"></span></button>
+    <div class="faq-a"><p>${f.a}</p></div>`;
+  faqWrap.appendChild(item);
+  const btn = item.querySelector('.faq-q');
+  const ans = item.querySelector('.faq-a');
+  btn.addEventListener('click', ()=>{
+    const isOpen = item.classList.contains('open');
+    faqWrap.querySelectorAll('.faq-item').forEach(other=>{
+      other.classList.remove('open');
+      other.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+    }
+  });
+});
+
+/* ============================= FOOTER SOCIAL ============================= */
+const footerSocial = document.getElementById('footerSocial');
+['instagram','facebook','linkedin','youtube'].forEach(name=>{
+  const a = document.createElement('a');
+  a.href = '#'; a.setAttribute('aria-label', name);
+  a.innerHTML = iconSVG(name);
+  footerSocial.appendChild(a);
+});
+
+/* ============================= ICONS FOR STATIC data-icon SPOTS ============================= */
+document.querySelectorAll('[data-icon]').forEach(el=>{
+  el.innerHTML = iconSVG(el.dataset.icon);
+});
+
+/* render all lucide icons now that markup exists */
+lucide.createIcons();
+
+/* ============================= LOADER ============================= */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'), 500);
+});
+
+/* ============================= NAV SCROLL / MOBILE ============================= */
+const navEl = document.querySelector('nav.nav-links');
+const headerEl = document.querySelector('header');
+const navLinks = document.getElementById('navLinks');
+const mobileToggle = document.getElementById('mobileToggle');
+mobileToggle.innerHTML = iconSVG('menu');
+lucide.createIcons();
+mobileToggle.addEventListener('click', ()=>{
+  navLinks.classList.toggle('open');
+  mobileToggle.innerHTML = iconSVG(navLinks.classList.contains('open') ? 'x' : 'menu');
+  lucide.createIcons();
+});
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click', ()=>{
+  navLinks.classList.remove('open');
+  mobileToggle.innerHTML = iconSVG('menu');
+  lucide.createIcons();
+}));
+
+function onScroll(){
+  const y = window.scrollY;
+  navEl.classList.toggle('scrolled', y > 40);
+
+  // scroll progress + thread
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = h > 0 ? (y / h) * 100 : 0;
+  document.getElementById('scroll-progress').style.width = pct + '%';
+  document.getElementById('thread-fill').style.height = pct + '%';
+  document.getElementById('thread-dot').style.top = pct + '%';
+
+  // to-top button
+  document.getElementById('toTop').classList.toggle('show', y > 600);
+}
+document.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+document.getElementById('toTop').addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+/* ============================= CURSOR ============================= */
+const glow = document.getElementById('cursor-glow');
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+window.addEventListener('mousemove', (e)=>{
+  glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px';
+  dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px';
+  ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px';
+});
+document.querySelectorAll('a,button,.faq-q').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>{ ring.style.width='54px'; ring.style.height='54px'; ring.style.opacity='0.5'; });
+  el.addEventListener('mouseleave', ()=>{ ring.style.width='34px'; ring.style.height='34px'; ring.style.opacity='1'; });
+});
+
+/* ============================= REVEAL ON SCROLL ============================= */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+  });
+}, {threshold:0.15});
+revealEls.forEach(el=>io.observe(el));
+// re-scan periodically for dynamically injected reveal elements
+setTimeout(()=>document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)), 100);
+
+/* ============================= COUNTERS ============================= */
+const counters = document.querySelectorAll('[data-count]');
+const counterIO = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el = entry.target;
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimal || '0');
+      const suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const step = target / 60;
+      const tick = ()=>{
+        cur += step;
+        if(cur >= target){ el.textContent = target.toFixed(decimals) + suffix; return; }
+        el.textContent = cur.toFixed(decimals) + suffix;
+        requestAnimationFrame(tick);
+      };
+      tick();
+      counterIO.unobserve(el);
+    }
+  });
+}, {threshold:0.5});
+counters.forEach(el=>counterIO.observe(el));
+
+/* ============================= BEFORE / AFTER SLIDER ============================= */
+const baSlider = document.getElementById('baSlider');
+const baBeforeWrap = document.getElementById('baBeforeWrap');
+const baHandle = document.getElementById('baHandle');
+let dragging = false;
+function setBaPos(clientX){
+  const rect = baSlider.getBoundingClientRect();
+  let pct = ((clientX - rect.left) / rect.width) * 100;
+  pct = Math.max(4, Math.min(96, pct));
+  baBeforeWrap.style.width = pct + '%';
+  baHandle.style.left = pct + '%';
+}
+baHandle.addEventListener('mousedown', ()=>dragging=true);
+window.addEventListener('mouseup', ()=>dragging=false);
+window.addEventListener('mousemove', (e)=>{ if(dragging) setBaPos(e.clientX); });
+baHandle.addEventListener('touchstart', ()=>dragging=true, {passive:true});
+window.addEventListener('touchend', ()=>dragging=false);
+window.addEventListener('touchmove', (e)=>{ if(dragging) setBaPos(e.touches[0].clientX); }, {passive:true});
+baSlider.addEventListener('click', (e)=>{ if(e.target===baHandle) return; setBaPos(e.clientX); });
+
+const baSets = {
+  1:{before:'photo-1570840934347-4dc56c98b8ef', after:'photo-1494790108377-be9c29b29330'},
+  2:{before:'photo-1580465446361-8aae5321522b', after:'photo-1499313843378-eebdb187f629'},
+  3:{before:'photo-1599566219227-2efe0c9b7f5f', after:'photo-1545803928-04e3f4cdd4ed'},
+};
+document.querySelectorAll('.ba-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.ba-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const set = baSets[tab.dataset.set];
+    document.querySelector('.ba-after').src = `https://images.unsplash.com/${set.after}?fm=jpg&q=80&w=1000&auto=format&fit=crop`;
+    baBeforeWrap.querySelector('img').src = `https://images.unsplash.com/${set.before}?fm=jpg&q=80&w=1000&auto=format&fit=crop`;
+  });
+});
+
+/* ============================= THEME TOGGLE ============================= */
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.innerHTML = iconSVG('moon');
+lucide.createIcons();
+let isDark = false;
+themeToggle.addEventListener('click', ()=>{
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeToggle.innerHTML = iconSVG(isDark ? 'sun' : 'moon');
+  lucide.createIcons();
+});
+
+/* ============================= RIPPLE BUTTONS ============================= */
+document.querySelectorAll('[data-ripple]').forEach(btn=>{
+  btn.addEventListener('click', function(e){
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'btn-ripple';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top = (e.clientY - rect.top) + 'px';
+    ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+    this.appendChild(ripple);
+    setTimeout(()=>ripple.remove(), 650);
+  });
+});
+
+/* ============================= FORM SUBMIT ============================= */
+document.getElementById('apptForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('formSuccess').classList.add('show');
+});
+
+/* ============================= NEWSLETTER ============================= */
+document.getElementById('newsletterBtn').addEventListener('click', (e)=>{
+  e.preventDefault();
+  const input = document.querySelector('.newsletter input');
+  if(input.value.trim()){
+    input.value = '';
+    input.placeholder = 'Thank you for joining!';
+  }
+});
+
+/* ============================= YEAR ============================= */
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
