@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DenDoc Dental — Creating Confident Smiles</title>
+<meta name="description" content="DenDoc Dental — world-class, painless, personalized dentistry powered by the latest technology.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader"><div class="loader-mark">DEN<span>DOC</span></div><div class="loader-bar"></div></div>
+
+<!-- CURSOR -->
+<div id="cursor-glow"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- GOLD THREAD SIGNATURE -->
+<div id="thread-wrap">
+  <div id="thread-track">
+    <div id="thread-fill"></div>
+    <div id="thread-dot" style="top:0%"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header>
+  <div class="container">
+    <a href="#home" class="logo">DEN<span>DOC</span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#doctors">Specialists</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#technology">Technology</a>
+      <a href="#contact">Contact</a>
+      <a href="#appointment" class="nav-cta">Book Appointment</a>
+    </nav>
+    <div style="display:flex;align-items:center;">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu"></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. Excellence in Modern Dentistry</div>
+      <h1>Creating <em>Confident Smiles</em> with World-Class Dental Care.</h1>
+      <p class="sub">Experience painless, advanced, and personalized dentistry — where Swiss-level precision meets five-star comfort.</p>
+      <div class="hero-ctas">
+        <a href="#appointment" class="btn btn-gold" data-ripple>Book Appointment</a>
+        <a href="#doctors" class="btn btn-outline" data-ripple>Meet Our Doctors</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num" data-count="20" data-suffix="+">0</div><div class="stat-label">Years Experience</div></div>
+        <div><div class="stat-num" data-count="15000" data-suffix="+">0</div><div class="stat-label">Happy Patients</div></div>
+        <div><div class="stat-num" data-count="4.9" data-decimal="1" data-suffix="★">0</div><div class="stat-label">Average Rating</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="line"></div></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-media reveal">
+        <img src="https://images.unsplash.com/photo-1643660527098-559f89e45a92?fm=jpg&q=80&w=900&auto=format&fit=crop" alt="DenDoc Dental treatment room" style="aspect-ratio:8/9;object-fit:cover;">
+        <div class="about-badge">
+          <div class="icon-wrap" data-icon="shield-check"></div>
+          <div><b>ISO Certified</b><span>Sterilization Standards</span></div>
+        </div>
+      </div>
+      <div class="about-text reveal reveal-delay-1">
+        <div class="eyebrow">About DenDoc</div>
+        <h2>Where Advanced Technology Meets Human Warmth</h2>
+        <p>DenDoc Dental was founded on a single conviction: exceptional dentistry should feel as good as it looks. Every treatment room is engineered for calm — matched by a clinical team trained across some of the world's leading dental institutes.</p>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="target"></div>
+            <h4>Our Mission</h4>
+            <p>Deliver painless, precise care that restores confidence, not just teeth.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="eye"></div>
+            <h4>Our Vision</h4>
+            <p>To set the global benchmark for luxury dental experiences.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="cpu"></div>
+            <h4>Modern Equipment</h4>
+            <p>CBCT, AI diagnostics, and intraoral scanning under one roof.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon-wrap" data-icon="heart-handshake"></div>
+            <h4>Patient-First</h4>
+            <p>Transparent plans, flexible scheduling, zero surprises.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">What We Offer</div>
+      <h2>Comprehensive Dental Excellence</h2>
+      <p>Ten disciplines, one seamless standard of care — from routine checkups to full smile transformations.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Why DenDoc</div>
+      <h2>Eight Reasons Patients Trust Us</h2>
+      <p>A journey engineered around comfort, precision, and complete peace of mind.</p>
+    </div>
+    <div class="why-wrap">
+      <div class="why-line"></div>
+      <div id="whyItems"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section id="doctors" style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Meet The Team</div>
+      <h2>Our Specialists</h2>
+      <p>Board-certified experts, each dedicated to a single discipline of exceptional care.</p>
+    </div>
+    <div class="doctors-grid" id="doctorsGrid"></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Smile Gallery</div>
+      <h2>Real Transformations</h2>
+      <p>Drag the slider to see the DenDoc difference.</p>
+    </div>
+    <div class="ba-wrap reveal">
+      <div class="ba-slider" id="baSlider">
+        <img class="ba-after" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?fm=jpg&q=80&w=1000&auto=format&fit=crop" alt="After treatment">
+        <div class="ba-before-wrap" id="baBeforeWrap">
+          <img src="https://images.unsplash.com/photo-1570840934347-4dc56c98b8ef?fm=jpg&q=80&w=1000&auto=format&fit=crop" alt="Before treatment">
+        </div>
+        <div class="ba-label left">Before</div>
+        <div class="ba-label right">After</div>
+        <div class="ba-handle" id="baHandle"></div>
+      </div>
+      <div class="ba-tabs">
+        <button class="ba-tab active" data-set="1">Veneers Case</button>
+        <button class="ba-tab" data-set="2">Whitening Case</button>
+        <button class="ba-tab" data-set="3">Implants Case</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Testimonials</div>
+      <h2>Loved by Our Patients</h2>
+    </div>
+    <div class="test-wrap reveal">
+      <button class="test-arrow prev" id="testPrev" aria-label="Previous">‹</button>
+      <div class="test-track"><div class="test-slides" id="testSlides"></div></div>
+      <button class="test-arrow next" id="testNext" aria-label="Next">›</button>
+      <div class="test-dots" id="testDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section id="technology">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Innovation</div>
+      <h2>Technology That Sets Us Apart</h2>
+      <p>Diagnostic and treatment tools rarely found outside leading academic hospitals.</p>
+    </div>
+    <div class="tech-grid" id="techGrid"></div>
+  </div>
+</section>
+
+<!-- APPOINTMENT -->
+<section class="appt-section" id="appointment">
+  <div class="container">
+    <div class="appt-grid">
+      <div class="appt-text reveal">
+        <div class="eyebrow">Book A Visit</div>
+        <h2>Reserve Your Consultation</h2>
+        <p>Tell us a little about what you're looking for — our care team will confirm within one business day.</p>
+        <ul class="appt-points">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Free initial consultation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Flexible morning &amp; evening slots</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Transparent, itemized pricing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Emergency slots held daily</li>
+        </ul>
+      </div>
+      <div class="appt-form reveal reveal-delay-1">
+        <form id="apptForm">
+          <div class="form-row">
+            <div class="field"><label>Full Name</label><input type="text" required placeholder="Your name"></div>
+            <div class="field"><label>Phone</label><input type="tel" required placeholder="+91 00000 00000"></div>
+          </div>
+          <div class="field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+          <div class="form-row">
+            <div class="field">
+              <label>Treatment</label>
+              <select required>
+                <option value="">Select treatment</option>
+                <option>General Dentistry</option>
+                <option>Dental Implants</option>
+                <option>Cosmetic Dentistry</option>
+                <option>Orthodontics</option>
+                <option>Teeth Whitening</option>
+                <option>Emergency Care</option>
+              </select>
+            </div>
+            <div class="field"><label>Preferred Date</label><input type="date"></div>
+          </div>
+          <div class="field"><label>Message (optional)</label><textarea placeholder="Anything we should know before your visit?"></textarea></div>
+          <button type="submit" class="form-submit" data-ripple>Confirm Appointment Request</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="30" height="30"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h4>Request Received</h4>
+          <p>Our care team will reach out within one business day to confirm your slot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:var(--white);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">FAQ</div>
+      <h2>Common Questions</h2>
+    </div>
+    <div class="faq-wrap" id="faqWrap"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="justify-content:center;">Visit Us</div>
+      <h2>Get In Touch</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-map reveal">
+        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=80.235%2C13.045%2C80.275%2C13.075&layer=mapnik" loading="lazy"></iframe>
+      </div>
+      <div class="contact-list reveal reveal-delay-1">
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="map-pin"></div>
+          <div><h4>Clinic Address</h4><p>4th Floor, The Meridian Tower, Anna Salai, Chennai 600002</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="clock"></div>
+          <div><h4>Working Hours</h4><p>Mon – Sat: 9:00 AM – 8:00 PM · Sun: 10:00 AM – 4:00 PM</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="phone"></div>
+          <div><h4>Phone &amp; WhatsApp</h4><p>+91 98765 43210</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="mail"></div>
+          <div><h4>Email</h4><p>hello@dendocdental.com</p></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon-wrap" data-icon="siren"></div>
+          <div><h4>Emergency Line</h4><p>+91 98765 00000 (24/7)</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo">DEN<span>DOC</span></a>
+        <p>Luxury dentistry, engineered around you. Modern technology, unhurried care, world-class results.</p>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#doctors">Specialists</a></li>
+          <li><a href="#gallery">Smile Gallery</a></li>
+          <li><a href="#appointment">Book Appointment</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Hours</h5>
+        <ul class="footer-hours">
+          <li><span>Mon – Fri</span><span>9am – 8pm</span></li>
+          <li><span>Saturday</span><span>9am – 6pm</span></li>
+          <li><span>Sunday</span><span>10am – 4pm</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Newsletter</h5>
+        <p style="font-size:.85rem;color:rgba(255,255,255,0.55);">Smile care tips, once a month.</p>
+        <div class="newsletter"><input type="email" placeholder="Your email"><button id="newsletterBtn">Join</button></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> DenDoc Dental. All rights reserved.</span>
+      <span>Designed with care in Chennai</span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="float-btns">
+  <a href="https://wa.me/919876543210" target="_blank" class="fbtn whatsapp" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.29 4.86L2 22l5.36-1.4a9.9 9.9 0 0 0 4.68 1.19h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.4c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.25-8.25 8.25zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.4-.12-.56.13-.17.25-.65.81-.79.97-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.22-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.86-.87 2.09s.9 2.42 1.02 2.58c.12.17 1.77 2.7 4.28 3.79.6.26 1.06.42 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
+  </a>
+  <button class="fbtn totop" id="toTop" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
